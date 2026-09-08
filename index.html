@@ -662,6 +662,46 @@
       padding: 5px 12px 0;
     }
 
+    .settlement-overlay {
+      position: fixed;
+      z-index: 30;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(35, 25, 42, 0.58);
+      backdrop-filter: blur(5px);
+    }
+    .settlement-modal {
+      width: min(760px, 100%);
+      max-height: min(88vh, 820px);
+      overflow-y: auto;
+      padding: 24px;
+      border: 1px solid #b78642;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #fffaf0, #f2e6d2);
+      color: #3d3047;
+      box-shadow: 0 24px 70px rgba(26, 17, 33, 0.34);
+    }
+    .settlement-kicker { color: #7d5a2e; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; }
+    .settlement-modal h2 { margin: 5px 0 8px; color: #4b315a; font-family: Georgia, serif; font-size: clamp(1.5rem, 4vw, 2rem); }
+    .settlement-intro { margin: 0 0 16px; line-height: 1.7; }
+    .settlement-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .settlement-column { padding: 12px; border: 1px solid #ddceb7; border-radius: 10px; background: rgba(255,255,255,0.45); }
+    .settlement-column h3 { margin: 0 0 7px; color: #5a3f72; font-size: 0.9rem; }
+    .settlement-column ul { margin: 0; padding-left: 1.2em; font-size: 0.78rem; line-height: 1.65; }
+    .settlement-column li + li { margin-top: 4px; }
+    .settlement-column.pending h3 { color: #896f5a; }
+    .settlement-wall { margin-top: 4px; padding: 12px 0 2px; background: transparent; border: 0; }
+    .settlement-wall .achievement-list { padding-bottom: 7px; }
+    .settlement-action { width: 100%; margin-top: 17px; padding: 11px 16px; border: 0; border-radius: 10px; color: #fff8ed; background: #5a3f72; font: inherit; font-weight: 800; box-shadow: 0 5px 12px rgba(90, 63, 114, 0.24); transition: transform 0.16s ease, background 0.16s ease; }
+    .settlement-action:hover { background: #49335d; transform: translateY(-1px); }
+    @media (max-width: 620px) {
+      .settlement-modal { padding: 18px; }
+      .settlement-summary { grid-template-columns: 1fr; }
+    }
+
     .full-achievement-card {
       margin: 12px 0 2px;
       padding: 13px 16px;
@@ -1264,19 +1304,43 @@
     if (hasShownFinalSettlement) return;
     hasShownFinalSettlement = true;
     const summary = getMissionSummary();
-    const doneText = summary.done.length ? summary.done.join('、') : '尚未完成隱藏任務';
-    const pendingText = summary.pending.length ? `還可以補做：${summary.pending.join('、')}。` : '三個隱藏任務全數完成，真是漂亮收官！';
-    const achievementText = achievementSet.size ? [...achievementSet].map(id => achievementGroups[id].name).join('、') : '尚未完成類別成就';
     const allAchievementCount = missionSet.size + achievementSet.size;
     const title = getAchievementTitle(allAchievementCount);
     const closing = getAchievementClosing(allAchievementCount);
-    const settlementRow = appendMessage(`今夜竹影小記：<br><br>小友今晚走過 <b>${Math.min(unlockedSet.size, 27)}</b> 段東坡先生的人生片段，偶然點亮了 <b>${allAchievementCount}</b> 枚徽章。<br>先生記得的幾段話：<b>${achievementText}</b>。<br>今夜的雅號：<b>${title}</b>。<br><br>${closing}<br><br>下次再來，不必照著錦囊問；帶一個你真正好奇的問題來，老夫仍在竹影下等你。`, 'sushi', '【今夜竹影小記】');
-    const settlementWall = document.createElement('section');
-    settlementWall.className = 'achievement-wall settlement-wall';
-    settlementWall.setAttribute('aria-label', '今夜成就徽章牆');
-    settlementWall.innerHTML = '<div class="achievement-wall-title">今夜點亮的成就　<span id="achievementWallHint">探索中</span></div><div class="achievement-list" id="achievementList"></div>';
-    settlementRow.querySelector('.bubble').appendChild(settlementWall);
+    const doneIds = Object.keys(achievementMeta).filter(id => missionSet.has(id) || achievementSet.has(id));
+    const pendingIds = Object.keys(achievementMeta).filter(id => !missionSet.has(id) && !achievementSet.has(id));
+    const doneList = doneIds.length
+      ? doneIds.map(id => `<li><b>${achievementMeta[id].name}</b>：${achievementMeta[id].condition}</li>`).join('')
+      : '<li>今晚尚未點亮成就，下一席夜話再試一次。</li>';
+    const pendingList = pendingIds.length
+      ? pendingIds.map(id => `<li><b>${achievementMeta[id].name}</b>：${achievementMeta[id].condition}</li>`).join('')
+      : '<li>所有成就都已完成，真是漂亮收官！</li>';
+    const overlay = document.createElement('div');
+    overlay.className = 'settlement-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', '今夜夜話結算');
+    overlay.innerHTML = `
+      <div class="settlement-modal">
+        <div class="settlement-kicker">竹影收聲・今夜結算</div>
+        <h2>今夜竹影小記</h2>
+        <p class="settlement-intro">小友今晚走過 <b>${Math.min(unlockedSet.size, 27)}</b> 段東坡先生的人生片段，點亮了 <b>${allAchievementCount}</b> 枚徽章。今夜的雅號是「<b>${title}</b>」。<br>${closing}</p>
+        <div class="settlement-summary">
+          <section class="settlement-column"><h3>已達成成就</h3><ul>${doneList}</ul></section>
+          <section class="settlement-column pending"><h3>未達成成就與條件</h3><ul>${pendingList}</ul></section>
+        </div>
+        <section class="achievement-wall settlement-wall" aria-label="今夜成就徽章牆">
+          <div class="achievement-wall-title">今夜成就徽章牆　<span id="achievementWallHint">探索中</span></div>
+          <div class="achievement-list" id="achievementList"></div>
+        </section>
+        <button class="settlement-action" type="button" onclick="restartNightTalk()">再入竹影，續一席夜話</button>
+      </div>`;
+    document.body.appendChild(overlay);
     renderAchievementWall();
+  }
+
+  function restartNightTalk() {
+    window.location.reload();
   }
 
 
@@ -1363,7 +1427,6 @@
         showAchievementToast(group.name, '你剛剛走完了一整條線索');
       }
     });
-    renderAchievementWall();
   }
 
   const unlockedSet = new Set();
@@ -1445,7 +1508,6 @@
     if (timeLeft <= 0) {
       clearInterval(timer);
       showFinalSettlement();
-      appendMessage('夜色漸深，竹影也慢慢收聲。今日便談到這裡；下回若有新的問題，帶來與老夫再續。', 'sushi', '【夜話將別】');
     }
   }, 1000);
 
