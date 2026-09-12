@@ -735,14 +735,14 @@
       </div>
     </div>
     <div class="timer-badge">
-      ⏳ 倒數 <span id="timerText">15:00</span>
+      ⏳ 倒數 <span id="timerText">20:00</span>
     </div>
   </div>
 
   <!-- 解鎖進度條 -->
   <div class="progress-bar">
     <span>💡 探詢引導：下方靈感錦囊會隨對話動態更新，點擊可直接填入提問！</span>
-    <span>人生檔案：<b id="clueCount">0</b> / 27</span>
+    <span>人生檔案：<b id="clueCount">0</b> / <b id="clueTotal">0</b></span>
   </div>
 
 
@@ -773,12 +773,10 @@
   </div>
 
 
-  <!-- 道別互動 -->
-  <div class="farewell-actions" id="farewellActions" aria-label="道別選項">
-    <span class="farewell-label">夜話將別：</span>
-    <button class="farewell-btn" type="button" onclick="fillInput('謝謝先生，今天和你聊天我學到很多！')">謝謝先生</button>
-    <button class="farewell-btn" type="button" onclick="fillInput('東坡先生，下次再見！')">下次再見</button>
-    <button class="farewell-btn" type="button" onclick="fillInput('東坡先生，學生先告辭了！')">告辭</button>
+  <!-- 學生主動道別後才出現的提前結算按鈕 -->
+  <div class="farewell-actions" id="farewellActions" aria-label="提前結束夜話">
+    <span class="farewell-label">已互道珍重：</span>
+    <button class="farewell-btn" type="button" onclick="endNightTalk()">收席看小記</button>
   </div>
 
   <!-- 輸入列 -->
@@ -790,7 +788,7 @@
 </div>
 
 <script>
-  // 蘇軾完整智庫（全量 27 大模組，逐一檢查無遺漏）
+  // 蘇軾完整智庫：涵蓋作品、生平、故人、生活、黃州與文壇並稱
   const sushiDB = [
     {
       id: "advice_setback",
@@ -1156,7 +1154,7 @@
       id: "oyster_easter_egg",
       priority: 90,
       keys: ["生蠔", "牡蠣", "吃生蠔", "生蠔信", "吃生蠔寫信", "海南吃生蠔"],
-      title: "【🎉 爆笑彩蛋：吃貨東坡的生蠔密信】",
+      title: "【小彩蛋・吃貨東坡的生蠔密信】",
       reply: "（壓低聲音，四下張望）噓！小聲點！莫叫朝廷那幫官員聽了去！<br><br>" +
              "當年老夫六十二歲被貶到海南儋州，當地黎族鄉親送來生蠔，老夫剖開肉用酒煮、用火烤，鮮甜肥美至極！老夫特地寫信千叮嚀萬囑咐吾兒蘇過：『<b>此味極美，切不可令京城士大夫知之，恐爭欲南徙以分此味也！</b>』<br><br>" +
              "哈哈哈哈！老夫真怕朝中那幫官員知道海南生蠔這麼好吃，一個個爭著犯錯自請貶官到海南來跟我搶生蠔吃呢！",
@@ -1164,12 +1162,10 @@
     },
     {
       id: "bath_easter_egg",
-      priority: 90,
-      keys: ["洗澡", "不洗澡", "你洗澡嗎", "王安石洗澡", "搓背", "洗不洗澡"],
-      title: "【🎉 爆笑彩蛋：洗澡大爆氣】",
-      reply: "（拍桌站起）放肆！何方小友在此造謠？！<br><br>" +
-             "不洗澡的是王介甫（王安石）！老夫平生最愛泡溫泉、沐浴搓背！老夫甚至還寫過詞調侃澡堂搓澡師傅：『<i>寄語揩背人，盡日勞何益？輕手，輕手，居士本來無垢！</i>』<br><br>" +
-             "介甫那是出了名的邋遢，經年不洗臉、衣服穿到生蝨子，連他夫人都在其鬍鬚裡抓到過蝨子！休要把老夫跟那邋遢的拗相公扯在一塊兒！",
+      priority: 130,
+      keys: ["王安石真的不洗澡嗎", "王安石不洗澡", "王安石洗澡", "介甫洗澡", "介甫不洗澡", "洗澡", "不洗澡", "你洗澡嗎", "您洗澡嗎", "沐浴", "搓背", "洗不洗澡"],
+      title: "【小彩蛋・洗澡疑案】",
+      reply: "哈哈，『王安石從來不洗澡』說得太滿了，但他的確以不修邊幅聞名。《宋史・王安石傳》記載他有時『衣垢不澣，面垢不洗』，意思是衣服、臉髒了也未必清洗；宋人筆記又留下朋友邀他定期沐浴等逸聞。這些材料能說明介甫生活儉樸、不重外表，卻不能證明他一生從不洗澡。<br><br>至於老夫，還寫過詞打趣搓背師傅：『<i>寄語揩背人，盡日勞君揮肘。輕手，輕手，居士本來無垢。</i>』所以這樁洗澡疑案，可別把我和介甫混作一人！",
       hint: "試著問問老夫：「您跟王安石晚年在江寧是怎麼和好的？」、「佛印和尚罵您一屁打過江的故事」或「東坡肉的烹調訣竅」"
     },
     {
@@ -1204,6 +1200,56 @@
       reply: "在老夫之前，世人總以為詞不過是花間酒前、小女子唱的鶯鶯燕燕、艷科小道。老夫偏不信這個邪！我『以詩入詞』，將家國大義、赤壁懷古、大江奔騰皆寫入詞中，開創出『豪放派』！<br><br>" +
              "後世將我與辛棄疾合稱『蘇辛』，與韓愈文章並稱『蘇海韓潮』，與黃庭堅詩歌並稱『蘇黃』，更與父親蘇洵、弟弟蘇轍合稱『三蘇』並列唐宋八大家！",
       hint: "試著問問老夫：「天下第三行書寒食帖的故事」、「念奴嬌赤壁懷古全詞解析」或「定風波沙湖道全詞解析」"
+    },
+
+    // === 7. 文壇暗號：蘇軾在詩、詞、文、書法中的各種並稱 ===
+    {
+      id: "pair_suhuang",
+      priority: 145,
+      keys: ["蘇黃是誰", "蘇黃並稱", "蘇黃是什麼", "詩與黃庭堅", "蘇軾黃庭堅並稱"],
+      title: "【文壇暗號・蘇黃】",
+      reply: "後人談宋詩時，常把老夫與黃庭堅並稱『<b>蘇黃</b>』。這是詩歌成就上的並稱，不是我們成立了什麼團體。老夫的詩題材開闊、說理自然；山谷詩講究鍛字煉句，自成江西詩派宗風。兩人的路數不盡相同，卻一同讓宋詩走出自己的聲音。<br><br>要留心：『蘇黃』談詩；若談書法，則另有『蘇黃米蔡』四家。",
+      hint: "還可以問：「蘇辛是誰？」、「歐蘇是哪兩個人？」或「蘇黃米蔡是書法嗎？」"
+    },
+    {
+      id: "pair_suxin",
+      priority: 145,
+      keys: ["蘇辛是誰", "蘇辛並稱", "蘇辛是什麼", "詞與辛棄疾", "蘇軾辛棄疾並稱"],
+      title: "【文壇暗號・蘇辛】",
+      reply: "後世詞家常把老夫與南宋辛棄疾並稱『<b>蘇辛</b>』。我們並非同時代朋友，而是後人回望宋詞時，把兩位能拓寬詞境的作者放在一起談。老夫詞風常見清曠與豪放，稼軒詞則多了報國壯志與沉鬱悲憤。<br><br>因此『蘇辛』是詞學上的比較稱呼，也不能說我們每一首詞都只有豪放一種面貌。",
+      hint: "還可以問：「蘇黃是詩歌並稱嗎？」、「歐蘇是什麼並稱？」或「豪放詞有哪些特色？」"
+    },
+    {
+      id: "pair_ousu",
+      priority: 145,
+      keys: ["歐蘇是誰", "歐蘇並稱", "歐蘇是什麼", "散文與歐陽修", "蘇軾歐陽修並稱"],
+      title: "【文壇暗號・歐蘇】",
+      reply: "談到北宋古文，後人常把恩師歐陽脩與老夫並稱『<b>歐蘇</b>』。這裡說的重點是散文：歐公文章平易自然、意蘊深厚，也提攜許多後進；老夫則在他的基礎上，把議論、敘事與抒情寫得更自在奔放。<br><br>『歐蘇』是散文史上的並稱，不是只說師生情誼；我們也都名列後世所稱的唐宋八大家。",
+      hint: "還可以問：「韓潮蘇海是什麼意思？」、「唐宋八大家有誰？」或「歐陽脩如何提攜蘇軾？」"
+    },
+    {
+      id: "pair_hansu",
+      priority: 145,
+      keys: ["韓潮蘇海", "蘇海韓潮", "韓海蘇潮", "韓愈蘇軾並稱", "文章如海潮", "唐宋八大家", "唐宋八大家有誰"],
+      title: "【文壇暗號・潮海】",
+      reply: "『<b>韓潮蘇海</b>』用海潮的壯闊來比喻唐代韓愈與老夫的文章氣勢，也可見『蘇海韓潮』『韓海蘇潮』等說法。它不是一個正式文社，而是後世對古文風格的讚語。<br><br>若再問唐宋八大家，那是後世將韓愈、柳宗元，以及宋代歐陽脩、蘇洵、蘇軾、蘇轍、王安石、曾鞏並列的古文家稱號。",
+      hint: "還可以問：「歐蘇是哪兩人？」、「三蘇有誰？」或「唐宋八大家為什麼叫八大家？」"
+    },
+    {
+      id: "pair_songfour",
+      priority: 145,
+      keys: ["蘇黃米蔡", "宋四家是誰", "宋四家並稱", "北宋四大書法家", "書法四家"],
+      title: "【文壇暗號・四管筆】",
+      reply: "說到『<b>蘇黃米蔡</b>』，談的是北宋書法四家：蘇軾、黃庭堅、米芾、蔡襄。這是後世書法史的概括，不是我們共同成立的門派，也不代表固定排名。<br><br>有些後世說法對最後一位『蔡』是否曾指蔡京有所爭論；今日博物館與一般書法史多以蔡襄為準。讀到這組暗號時，要把它和詩歌並稱『蘇黃』分清楚。",
+      hint: "還可以問：「蘇黃是談詩還是書法？」、「寒食帖為何有名？」或「宋四家各有誰？」"
+    },
+    {
+      id: "pair_threesu",
+      priority: 145,
+      keys: ["三蘇是誰", "三蘇有誰", "三蘇並稱", "眉山三蘇", "蘇家父子並稱"],
+      title: "【文壇暗號・眉山三影】",
+      reply: "『<b>三蘇</b>』是父親蘇洵、老夫蘇軾與弟弟蘇轍的文學並稱。我們父子三人都以文章聞名，也都名列後世所稱的唐宋八大家。<br><br>這不是蘇家所有後人的總稱，也不是三人組成的正式社團；它說的是眉山蘇氏父子在北宋文壇共同留下的影響。若要記憶，便記作：一位父親，兩位兄弟，三支筆。",
+      hint: "還可以問：「歐蘇是哪兩個人？」、「唐宋八大家有誰？」或「蘇轍和蘇軾感情如何？」"
     },
 
     // === 7. 黃州突圍：從低谷走向新的自己 ===
@@ -1269,7 +1315,7 @@
     }
   ];
 
-  // 全量靈感錦囊資料池（涵蓋官職、名篇、政績、書法，共 27 項；另有 3 個隱藏任務）
+  // 全量靈感錦囊資料池；總數由程式動態計算
   const allCluePool = [
     { id: "intro", label: "初見東坡", query: "請先生自我介紹一下" },
     { id: "name_origin", label: "車前橫木", query: "您的名字蘇軾有什麼特別的含意嗎？" },
@@ -1287,6 +1333,12 @@
     { id: "love_bamboo", label: "竹影與清風", query: "寧可食無肉不可居無竹是什麼意思？" },
     { id: "ouyang_xiu", label: "一頭地的約定", query: "您考進士時歐陽修為什麼說要避你一頭地？" },
     { id: "travel_map", label: "天涯何處去", query: "請先生講講你一生的漂泊軌跡" },
+    { id: "pair_suhuang", label: "詩壇雙峰", query: "蘇黃是誰？為什麼會這樣並稱？" },
+    { id: "pair_suxin", label: "詞中雙星", query: "蘇辛是誰？為什麼會這樣並稱？" },
+    { id: "pair_ousu", label: "古文雙璧", query: "歐蘇是誰？為什麼會這樣並稱？" },
+    { id: "pair_hansu", label: "潮海相逢", query: "韓潮蘇海是什麼意思？" },
+    { id: "pair_songfour", label: "四管名筆", query: "蘇黃米蔡是誰？宋四家是什麼？" },
+    { id: "pair_threesu", label: "眉山三影", query: "三蘇是誰？為什麼會這樣並稱？" },
     { id: "huangzhou_story", label: "城東那塊荒地", query: "蘇軾在黃州發生了什麼事？" },
     { id: "poem_jinshan", label: "此生何所成", query: "請解析自題金山畫像的全詩意思與心境" },
     { id: "poem_dingfengbo_shahu", label: "一蓑煙雨行", query: "請解析定風波莫聽穿林打葉聲的全詞意思" },
@@ -1334,20 +1386,23 @@
 
 
 
-  // 進度與成就分流：27 個內容解鎖 + 6 個獨立成就
+  // 進度與成就分流：內容解鎖、互動任務與分類成就分開計算
   const missionSet = new Set();
   const missionNames = {
-      quick_start: "快速啟程",
-    gossip_explorer: "八卦偵查",
+    quick_start: "快速啟程",
+    gossip_explorer: "軼事尋蹤",
     early_farewell: "主動道別",
-    courtesy: "言之有禮"
+    courtesy: "言之有禮",
+    self_directed: "自問成章"
   };
-  const gossipIds = new Set(["zhe_origin", "wang_an_shi", "foyin", "wang_fu_detail", "chao_yun_detail", "food_dongpo", "oyster_easter_egg"]);
+  const gossipIds = new Set(["zhe_origin", "wang_an_shi", "foyin", "wives", "wang_fu_detail", "wang_runzhi", "chao_yun_detail", "food_dongpo", "oyster_easter_egg", "bath_easter_egg"]);
   let hasShownFinalSettlement = false;
   let hasGreeted = false;
   let hasFarewelled = false;
   let lastInteractionAt = Date.now();
   let idleReminderCount = 0;
+  let hasUsedQuickTag = false;
+  let userMessageCount = 0;
 
   function unlockMission(id) {
     if (!missionSet.has(id)) {
@@ -1358,8 +1413,15 @@
     }
   }
 
+  function getMainClueCount() {
+    const mainClueIds = new Set(allCluePool.map(item => item.id));
+    return [...unlockedSet].filter(id => mainClueIds.has(id)).length;
+  }
+
   function updateProgress() {
-    document.getElementById('clueCount').innerText = Math.min(unlockedSet.size, 27);
+    document.getElementById('clueCount').innerText = getMainClueCount();
+    const total = document.getElementById('clueTotal');
+    if (total) total.innerText = allCluePool.length;
   }
 
   function getMissionSummary() {
@@ -1378,6 +1440,7 @@
 
   function showFinalSettlement() {
     if (hasShownFinalSettlement) return;
+    if (userMessageCount > 0 && !hasUsedQuickTag) unlockMission('self_directed');
     hasShownFinalSettlement = true;
     const summary = getMissionSummary();
     const allAchievementCount = missionSet.size + achievementSet.size;
@@ -1398,9 +1461,9 @@
     overlay.setAttribute('aria-label', '今夜夜話結算');
     overlay.innerHTML = `
       <div class="settlement-modal">
-        <div class="settlement-kicker">竹影收聲・今夜結算</div>
+        <div class="settlement-kicker">${hasFarewelled && timeLeft > 0 ? '互道珍重・提前收席' : '竹影收聲・今夜結算'}</div>
         <h2>今夜竹影小記</h2>
-        <p class="settlement-intro">小友今晚走過 <b>${Math.min(unlockedSet.size, 27)}</b> 段東坡先生的人生片段，點亮了 <b>${allAchievementCount}</b> 枚徽章。經過這席夜話，你與蘇軾先生成為了「<b>${relationship}</b>」。<br>${closing}</p>
+        <p class="settlement-intro">小友今晚走過 <b>${getMainClueCount()}</b> 段東坡先生的人生片段，點亮了 <b>${allAchievementCount}</b> 枚徽章。經過這席夜話，你與蘇軾先生成為了「<b>${relationship}</b>」。<br>${closing}</p>
         <div class="settlement-summary">
           <section class="settlement-column"><h3>已達成成就</h3><ul>${doneList}</ul></section>
           <section class="settlement-column pending"><h3>未達成成就與條件</h3><ul>${pendingList}</ul></section>
@@ -1413,6 +1476,11 @@
       </div>`;
     document.body.appendChild(overlay);
     renderAchievementWall();
+  }
+
+  function endNightTalk() {
+    clearInterval(timer);
+    showFinalSettlement();
   }
 
   function restartNightTalk() {
@@ -1444,14 +1512,18 @@
 
   const achievementMeta = {
     quick_start: { name: "快速啟程", condition: "前 2 分鐘提出第一問" },
-    gossip_explorer: { name: "八卦偵查", condition: "完成 1 個人物／趣聞線索" },
-    early_farewell: { name: "主動道別", condition: "30 秒前主動告辭" },
+    gossip_explorer: { name: "軼事尋蹤", condition: "完成 1 個人物或生活趣聞線索" },
+    early_farewell: { name: "主動道別", condition: "倒數結束前主動告辭" },
     courtesy: { name: "言之有禮", condition: "開頭問好，結尾道謝或道別" },
-    poem_master: { name: "詩詞書法通", condition: "完成詩詞書法全線" },
-    governance_master: { name: "政績治理通", condition: "完成地方治理全線" },
-    people_master: { name: "人物交遊通", condition: "完成人物交遊全線" },
-    lifestyle_master: { name: "飲食生活家", condition: "完成飲食生活全線" },
-    travel_master: { name: "漂泊足跡通", condition: "完成漂泊軌跡全線" }
+    self_directed: { name: "自問成章", condition: "全程不用靈感錦囊，所有訊息皆自行輸入" },
+    poem_master: { name: "詩墨尋章", condition: "完成詩詞與書法全線" },
+    governance_master: { name: "為民留痕", condition: "完成地方治理全線" },
+    people_master: { name: "故人知音", condition: "完成故人與交遊全線" },
+    lifestyle_master: { name: "煙火雅趣", condition: "完成生活與趣味全線" },
+    travel_master: { name: "天涯行旅", condition: "完成重要漂泊足跡" },
+    huangzhou_master: { name: "黃州突圍", condition: "完成黃州突圍全線" },
+    casual_master: { name: "閒話知心", condition: "完成閒話家常全線" },
+    literati_master: { name: "文壇識名", condition: "解開所有文人並稱" }
   };
 
   function renderAchievementWall() {
@@ -1474,24 +1546,36 @@
 
   const achievementGroups = {
     poem_master: {
-      name: "詩詞書法通",
-      ids: ["song_four_calligraphy", "poem_xihu", "poem_chengtian", "poem_xilin", "snow_mud", "love_bamboo", "poem_jinshan", "poem_dingfengbo_shahu", "poem_chibi", "song_ci"]
+      name: "詩墨尋章",
+      ids: ["song_four_calligraphy", "poem_xihu", "poem_chengtian", "poem_xilin", "snow_mud", "love_bamboo", "poem_jinshan", "poem_dingfengbo_shahu", "poem_chibi"]
     },
     governance_master: {
-      name: "政績治理通",
+      name: "為民留痕",
       ids: ["mizhou_locust_baby", "hangzhou_sudi", "xuzhou_flood", "dingzhou_military", "danzhou_hainan"]
     },
     people_master: {
-      name: "人物交遊通",
-      ids: ["zhe_origin", "wang_an_shi", "foyin", "wang_fu_detail", "chao_yun_detail", "ouyang_xiu"]
+      name: "故人知音",
+      ids: ["zhe_origin", "wang_an_shi", "foyin", "wives", "wang_fu_detail", "wang_runzhi", "chao_yun_detail", "ouyang_xiu"]
     },
     lifestyle_master: {
-      name: "飲食生活家",
-      ids: ["food_dongpo", "oyster_easter_egg", "love_bamboo"]
+      name: "煙火雅趣",
+      ids: ["food_dongpo", "oyster_easter_egg", "love_bamboo", "daily_life", "reading_habit"]
     },
     travel_master: {
-      name: "漂泊足跡通",
-      ids: ["travel_map", "poem_jinshan", "danzhou_hainan"]
+      name: "天涯行旅",
+      ids: ["travel_map", "huangzhou_story", "danzhou_hainan"]
+    },
+    huangzhou_master: {
+      name: "黃州突圍",
+      ids: ["huangzhou_story", "dongpo_title_origin", "song_four_calligraphy", "poem_chengtian", "poem_xilin"]
+    },
+    casual_master: {
+      name: "閒話知心",
+      ids: ["life_hardship", "family_closeness", "wives", "daily_life", "reading_habit", "life_choice"]
+    },
+    literati_master: {
+      name: "文壇識名",
+      ids: ["pair_suhuang", "pair_suxin", "pair_ousu", "pair_hansu", "pair_songfour", "pair_threesu"]
     }
   };
   const achievementSet = new Set();
@@ -1506,7 +1590,7 @@
   }
 
   const unlockedSet = new Set();
-  let timeLeft = 900; // 15 分鐘 (900秒)
+  let timeLeft = 1200; // 20 分鐘（1200秒）
 
 
 
@@ -1516,6 +1600,7 @@
     life: { label: "生平與官場", ids: ["intro", "name_origin", "official_career", "travel_map", "huzhou_memorial", "ouyang_xiu"] },
     huangzhou: { label: "黃州突圍", ids: ["huangzhou_story", "dongpo_title_origin", "song_four_calligraphy", "poem_chengtian", "poem_xilin"] },
     works: { label: "詩詞與書法", ids: ["song_four_calligraphy", "poem_xihu", "poem_chengtian", "poem_xilin", "snow_mud", "love_bamboo", "poem_jinshan", "poem_dingfengbo_shahu", "poem_chibi", "song_ci"] },
+    literati: { label: "文壇暗號", ids: ["pair_suhuang", "pair_suxin", "pair_ousu", "pair_hansu", "pair_songfour", "pair_threesu"] },
     people: { label: "故人與交遊", ids: ["zhe_origin", "wang_an_shi", "foyin", "wives", "wang_fu_detail", "wang_runzhi", "chao_yun_detail"] },
     places: { label: "地方治理", ids: ["mizhou_locust_baby", "hangzhou_sudi", "xuzhou_flood", "dingzhou_military", "danzhou_hainan"] },
     lifeStyle: { label: "生活與趣味", ids: ["food_dongpo", "oyster_easter_egg", "love_bamboo", "foyin"] },
@@ -1580,9 +1665,6 @@
     const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
     const s = String(timeLeft % 60).padStart(2, '0');
     document.getElementById('timerText').innerText = `${m}:${s}`;
-    if (timeLeft <= 30) {
-      document.getElementById('farewellActions').classList.add('visible');
-    }
     if (timeLeft <= 0) {
       clearInterval(timer);
       showFinalSettlement();
@@ -1590,6 +1672,7 @@
   }, 1000);
 
   function fillInput(text) {
+    hasUsedQuickTag = true;
     document.getElementById('userInput').value = text;
     document.getElementById('userInput').focus();
   }
@@ -1601,11 +1684,12 @@
     lastInteractionAt = Date.now();
     idleReminderCount = 0;
 
+    userMessageCount++;
     appendMessage(query, 'user');
     input.value = '';
 
     // 前兩分鐘內提出第一個問題，完成「快速啟程」
-    if (unlockedSet.size === 0 && timeLeft >= 780) unlockMission('quick_start');
+    if (unlockedSet.size === 0 && timeLeft >= 1080) unlockMission('quick_start');
 
     setTimeout(() => {
       processSushiAI(query);
@@ -1625,13 +1709,31 @@
       return;
     }
 
-    // 道別語句優先處理，回覆一則隨機佳句
-    const farewellWords = ["謝謝先生", "謝謝", "感謝先生", "下次再見", "再見", "告辭", "晚安", "先告辭"];
+    // 致謝與正式道別分流：只有真正告辭後才顯示提前結算按鈕。
+    const farewellWords = ["下次再見", "再見", "告辭", "晚安", "先告辭", "先聊到這裡", "今天先到這裡", "今日先到這裡"];
+    const gratitudeWords = ["謝謝先生", "謝謝", "感謝先生", "感謝您", "多謝先生"];
     if (farewellWords.some(word => lower.includes(word))) {
       hasFarewelled = true;
-      if (timeLeft > 30) unlockMission('early_farewell');
-      if (hasGreeted) unlockMission('courtesy');
+      if (timeLeft > 0) unlockMission('early_farewell');
+      if (hasGreeted || gratitudeWords.some(word => lower.includes(word))) unlockMission('courtesy');
       appendFarewellReply();
+      document.getElementById('farewellActions').classList.add('visible');
+      return;
+    }
+    if (gratitudeWords.some(word => lower.includes(word))) {
+      if (hasGreeted) unlockMission('courtesy');
+      appendMessage("小友有心了，不必客氣。若還有想問的，老夫仍在竹影下候著；若準備告辭，說聲『再見』或『先告辭』便好。", 'sushi', '【東坡先生回話】');
+      return;
+    }
+
+    // 複合關鍵字優先：同時提到王安石與洗澡，必定進入「洗澡疑案」而非人物介紹。
+    const asksWangBath = lower.includes('王安石') && ["洗澡", "不洗", "沐浴", "衛生", "洗臉"].some(word => lower.includes(word));
+    if (asksWangBath) {
+      const bathItem = sushiDB.find(item => item.id === 'bath_easter_egg');
+      unlockedSet.add(bathItem.id);
+      updateProgress();
+      appendMessage(bathItem.reply, 'sushi', bathItem.title, bathItem.hint);
+      renderQuickTags();
       return;
     }
 
@@ -1719,6 +1821,7 @@
     if (e.key === 'Enter') handleSendClick();
   });
 
+  updateProgress();
   renderTopicFilters();
   renderQuickTags();
 </script>
