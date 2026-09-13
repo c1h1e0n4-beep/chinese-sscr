@@ -1076,7 +1076,7 @@
     {
       id: "name_origin",
       priority: 88,
-      keys: ["名字", "含意", "含義", "取名", "名字由來", "為什麼叫蘇軾", "為什麼叫軾", "車前的橫木", "軾是什麼意思", "名二子說", "特別的含意", "名字的含意", "名字有何含意", "名二子", "取名寓意"],
+      keys: ["名字", "命名", "命名由來", "蘇軾命名由來", "蘇軾的命名由來", "名字由來", "含意", "含義", "取名", "為什麼叫蘇軾", "為什麼叫軾", "車前的橫木", "軾是什麼意思", "名二子說", "特別的含意", "名字的含意", "名字有何含意", "名二子", "取名寓意"],
       title: "【解鎖：父子情深・蘇軾名字由來】",
       reply: "哈哈！你問起老夫的名字啊？這可大有來頭！<br><br>" +
              "先父蘇洵曾專門寫過一篇名篇《<b>名二子說</b>》來告誡我們兄弟。車子前面供人手扶的橫木稱為『<b>軾</b>』，看似可有可無、無關大局，但少了它車子就不完整了。<br><br>" +
@@ -1463,7 +1463,7 @@
       <div class="settlement-modal">
         <div class="settlement-kicker">${hasFarewelled && timeLeft > 0 ? '互道珍重・提前收席' : '竹影收聲・今夜結算'}</div>
         <h2>今夜竹影小記</h2>
-        <p class="settlement-intro">小友今晚走過 <b>${getMainClueCount()}</b> 段東坡先生的人生片段，點亮了 <b>${allAchievementCount}</b> 枚徽章。經過這席夜話，你與蘇軾成為了「<b>${relationship}</b>」。<br>${closing}</p>
+        <p class="settlement-intro">小友今晚走過 <b>${getMainClueCount()}</b> 段東坡先生的人生片段，點亮了 <b>${allAchievementCount}</b> 枚徽章。經過這席夜話，你解鎖了新身分：「<b>${relationship}</b>」。<br>${closing}</p>
         <div class="settlement-summary">
           <section class="settlement-column"><h3>已達成成就</h3><ul>${doneList}</ul></section>
           <section class="settlement-column pending"><h3>未達成成就與條件</h3><ul>${pendingList}</ul></section>
@@ -1503,10 +1503,10 @@
   }
 
   function getAchievementClosing(count) {
-    if (count >= 8) return "你已成為東坡知己：不只讀過他的作品，也走進他的選擇、困頓與豁達。願你面對自己的風雨時，也能吟嘯徐行。";
-    if (count >= 6) return "你已成為東坡摯友：能從作品、政績與人物故事中聽見一個真實而立體的蘇軾。";
-    if (count >= 3) return "你已成為東坡雅友：這場夜話已經不只是問答，而是一段有來有往的閱讀。";
-    if (count >= 1) return "你已取得君子之交：願你帶著這一枚小小徽章，繼續問下一個好問題。";
+    if (count >= 8) return "你解鎖了新身分「東坡知己」：不只讀過他的作品，也走進他的選擇、困頓與豁達。願你面對自己的風雨時，也能吟嘯徐行。";
+    if (count >= 6) return "你解鎖了新身分「東坡摯友」：能從作品、政績與人物故事中聽見一個真實而立體的蘇軾。";
+    if (count >= 3) return "你解鎖了新身分「東坡雅友」：這場夜話已經不只是問答，而是一段有來有往的閱讀。";
+    if (count >= 1) return "你解鎖了新身分「君子之交」：願你帶著這一枚小小徽章，繼續問下一個好問題。";
     return "今晚先從一個問題開始，東坡先生已在竹影下等你。";
   }
 
