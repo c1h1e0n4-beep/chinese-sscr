@@ -1407,15 +1407,24 @@
 
   // 道別時隨機送給國三生一句容易理解、能帶走的蘇軾佳句
   const farewellReplies = [
-    "今日夜話便到這裡。老夫送小友一句：<br><br>「莫聽穿林打葉聲，何妨吟嘯且徐行。」<br><br>面對考試與人生的風雨，不必被外界的喧鬧嚇倒；穩住腳步，一步一步走，便是自己的從容。下次再見！",
-    "多謝小友來坐。臨別送你一句：<br><br>「人有悲歡離合，月有陰晴圓缺，此事古難全。」<br><br>有時考得好，有時不如意，都是成長的一部分；把能做的事做好，就已經很了不起。下次再見！",
-    "小友且收下這句話，作為今日的書籤：<br><br>「不識廬山真面目，只緣身在此山中。」<br><br>遇到難題時，若卡住了，不妨換個角度、退一步再看；很多答案會在新的位置浮現。祝你讀書順心，下次再見！",
-    "夜深了，老夫以一句小詩送別：<br><br>「竹外桃花三兩枝，春江水暖鴨先知。」<br><br>學習不只在課本裡，也在你每天觀察世界、感受生活的細節中。願你保有好奇心，明日也有新的發現。下次再見！",
-    "謝謝小友今日相伴。老夫送你一句：<br><br>「一蓑煙雨任平生。」<br><br>人生不會永遠晴朗，但你可以練習帶著勇氣前進；不用一次變得完美，只要比昨天更勇敢一點。下次再見！"
+    "今日夜話便到這裡。老夫送小友一句：<br><br>「莫聽穿林打葉聲，何妨吟嘯且徐行。」<br><br>面對考試與人生的風雨，不必被外界的喧鬧嚇倒；穩住腳步，一步一步走，便是自己的從容。下回見！",
+    "多謝小友來坐。臨別送你一句：<br><br>「人有悲歡離合，月有陰晴圓缺，此事古難全。」<br><br>有時考得好，有時不如意，都是成長的一部分；把能做的事做好，就已經很了不起。改日再聊！",
+    "小友且收下這句話，作為今日的書籤：<br><br>「不識廬山真面目，只緣身在此山中。」<br><br>遇到難題時，若卡住了，不妨換個角度、退一步再看；很多答案會在新的位置浮現。祝你讀書順心，下回再見！",
+    "夜深了，老夫以一句小詩送別：<br><br>「竹外桃花三兩枝，春江水暖鴨先知。」<br><br>學習不只在課本裡，也在你每天觀察世界、感受生活的細節中。願你保有好奇心，明日也有新的發現。下回見！",
+    "謝謝小友今日相伴。老夫送你一句：<br><br>「一蓑煙雨任平生。」<br><br>人生不會永遠晴朗，但你可以練習帶著勇氣前進；不用一次變得完美，只要比昨天更勇敢一點。改日再聊！",
+    "小友要走了麼？那便先送到這裡。竹影仍在，茶也替你留著；下回再來，老夫再同你談一段詩、一位故人，或一件尚未解開的小事。掰掰！",
+    "哈哈，小友說掰掰，老夫便不多留你。今日問到的故事，回去慢慢想；若又想起新的問題，隨時回到這間雅室。下回見！",
+    "先告辭也好。願小友此去腳步安穩，心中有問便有路；等下一次夜色落下，我們再續這席未完的夜話。改日再聊。",
+    "今日先到這裡，並不是故事說完了，只是把書籤夾在此處。小友下回再來，我們便從這一頁接著談。再見！"
   ];
 
-  function appendFarewellReply() {
-    const reply = farewellReplies[Math.floor(Math.random() * farewellReplies.length)];
+  function appendFarewellReply(query = '') {
+    const text = query.toLowerCase();
+    let pool = farewellReplies;
+    if (text.includes('掰掰') || text.includes('拜拜')) pool = farewellReplies.slice(5, 7);
+    else if (text.includes('下回見') || text.includes('下次再見') || text.includes('回頭見')) pool = farewellReplies.slice(0, 4);
+    else if (text.includes('改日再聊') || text.includes('下回再聊')) pool = [farewellReplies[1], farewellReplies[4], farewellReplies[7], farewellReplies[8]];
+    const reply = pool[Math.floor(Math.random() * pool.length)];
     appendMessage(reply, 'sushi', '【東坡先生的道別贈句】');
   }
 
@@ -1761,13 +1770,13 @@
     }
 
     // 致謝與正式道別分流：只有真正告辭後才顯示提前結算按鈕。
-    const farewellWords = ["下次再見", "再見", "告辭", "晚安", "先告辭", "先聊到這裡", "今天先到這裡", "今日先到這裡"];
+    const farewellWords = ["掰掰", "拜拜", "下回見", "下次再見", "再見", "回頭見", "改日再聊", "下回再聊", "告辭", "晚安", "先告辭", "先走了", "要走了", "先聊到這裡", "今天先到這裡", "今日先到這裡"];
     const gratitudeWords = ["謝謝先生", "謝謝", "感謝先生", "感謝您", "多謝先生"];
     if (farewellWords.some(word => lower.includes(word))) {
       hasFarewelled = true;
       if (timeLeft > 0) unlockMission('early_farewell');
       if (hasGreeted || gratitudeWords.some(word => lower.includes(word))) unlockMission('courtesy');
-      appendFarewellReply();
+      appendFarewellReply(query);
       document.getElementById('farewellActions').classList.add('visible');
       return;
     }
