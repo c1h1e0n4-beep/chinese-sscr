@@ -1109,7 +1109,7 @@
       priority: 100,
       keys: ["歐陽修", "進京趕考", "進京考試", "赴京趕考", "京城趕考", "出人頭地", "出頭地", "考進士", "第二名", "本該第一", "曾鞏", "省試", "刑賞忠厚之至論"],
       title: "【解鎖：科舉傳奇・歐陽修與出人頭地】",
-      reply: "哈哈！那是宋仁宗嘉祐二年（西元 1057 年），老夫才二十一歲進京趕考！主考官正是文壇盟主歐陽修恩師。<br><br>" +
+      reply: "哈哈！那是宋仁宗嘉祐二年（西元 1057 年），那年老夫二十一歲，進京參加科舉；主考官正是文壇盟主歐陽修恩師。<br><br>" +
              "老夫寫了篇〈刑賞忠厚之至論〉，恩師讀得拍案叫絕，本想點為天下第一名！但他以為這等奇文定是他得意弟子曾鞏所寫，為避嫌疑，竟將我降為第二名！<br><br>" +
              "放榜後恩師得知真相，大為讚嘆，寫信給同僚梅堯臣說：『<b>讀軾書，不覺汗出，快哉快哉！老夫當避路，放他出一頭地！</b>』這便是『出人頭地』的典故由來！恩師提攜之恩，老夫終生難忘。",
       hint: "試著問問老夫：「考中進士後發生了什麼變故？」、「蘇海韓潮是什麼意思？」或「您在密州打獵的故事」"
@@ -1274,7 +1274,15 @@
       hint: "還可以問：「東坡居士這個名字怎麼來的？」、「黃州寒食帖是在什麼情況下寫的？」或「我想了解黃州的生活細節」"
     },
 
-    // === 7. 逆境之路：貶謫路上的三次重生 ===
+    // === 7. 黃州之後：風雨後再起 ===
+    {
+      id: "after_huangzhou_rise",
+      priority: 175,
+      keys: ["風雨後再起", "黃州之後", "黃州之後發生了什麼", "黃州後重新受到重用", "黃州後有沒有回朝", "短暫再起", "離開黃州後去哪裡", "第二次杭州", "蘇軾第二次到杭州", "杭州知州", "重新受到任用", "惠州之前發生什麼"],
+      title: "【逆境之路・風雨後再起】",
+      reply: "黃州四年，是老夫重新把生活拾回來的地方。元豐七年離開黃州後，老夫曾一度回到朝廷任職，重新受到任用；後來又第二次到杭州擔任知州。<br><br>那時的老夫，已不再是初到杭州時協助知州辦事的通判，而是真正能主政一方的地方長官。我疏濬西湖、修築長堤，讓淤泥重新成為有用之材，後人便稱那條長堤為『<b>蘇堤</b>』。<br><br>只是朝廷風向仍然反覆，這段重新施展抱負的日子並不長久。後來政局再次變化，老夫又被貶往惠州，最後遠至儋州。回頭看，黃州不是人生的終點，而是重新站起來的地方；杭州的第二次任官，則是老夫短暫重新施展抱負的時期。",
+      hint: "還可以問：「蘇軾一生去過幾次杭州？」、「杭州知州和杭州通判有什麼不同？」或「黃州之後為什麼又被貶到惠州？」"
+    },
     {
       id: "huizhou_litchi",
       priority: 150,
@@ -1356,6 +1364,7 @@
     { id: "pair_songfour", label: "四管名筆", query: "蘇黃米蔡是誰？宋四家是什麼？" },
     { id: "pair_threesu", label: "眉山三影", query: "三蘇是誰？為什麼會這樣並稱？" },
     { id: "huangzhou_story", label: "城東那塊荒地", query: "蘇軾在黃州發生了什麼事？" },
+    { id: "after_huangzhou_rise", label: "風雨後再起", query: "黃州之後，您是不是一直被貶？後來還有重新受到重用嗎？" },
     { id: "huizhou_litchi", label: "嶺南三百荔", query: "日啖荔枝三百顆是在什麼情況下寫的？" },
     { id: "poem_jinshan", label: "此生何所成", query: "請解析自題金山畫像的全詩意思與心境" },
     { id: "poem_dingfengbo_shahu", label: "一蓑煙雨行", query: "請解析定風波莫聽穿林打葉聲的全詞意思" },
@@ -1593,11 +1602,11 @@
     },
     travel_master: {
       name: "天涯行旅",
-      ids: ["travel_map", "huangzhou_story", "huizhou_litchi", "danzhou_hainan"]
+      ids: ["travel_map", "huangzhou_story", "after_huangzhou_rise", "huizhou_litchi", "danzhou_hainan"]
     },
     huangzhou_master: {
       name: "逆境突圍",
-      ids: ["huangzhou_story", "huzhou_memorial", "dongpo_title_origin", "song_four_calligraphy", "poem_chengtian", "poem_xilin", "poem_dingfengbo_shahu", "poem_chibi", "huizhou_litchi", "danzhou_hainan"]
+      ids: ["huangzhou_story", "after_huangzhou_rise", "huzhou_memorial", "dongpo_title_origin", "song_four_calligraphy", "poem_chengtian", "poem_xilin", "poem_dingfengbo_shahu", "poem_chibi", "huizhou_litchi", "danzhou_hainan"]
     },
     casual_master: {
       name: "閒話知心",
@@ -1628,7 +1637,7 @@
   const topicGroups = {
     all: { label: "全部", ids: null },
     life: { label: "生平與官場", ids: ["intro", "name_origin", "official_career", "travel_map", "huzhou_memorial", "ouyang_xiu"] },
-    huangzhou: { label: "逆境之路", ids: ["huangzhou_story", "huzhou_memorial", "dongpo_title_origin", "life_hardship", "song_four_calligraphy", "poem_chengtian", "poem_xilin", "poem_dingfengbo_shahu", "poem_chibi", "huizhou_litchi", "danzhou_hainan"] },
+    huangzhou: { label: "逆境之路", ids: ["huangzhou_story", "after_huangzhou_rise", "huzhou_memorial", "dongpo_title_origin", "life_hardship", "song_four_calligraphy", "poem_chengtian", "poem_xilin", "poem_dingfengbo_shahu", "poem_chibi", "huizhou_litchi", "danzhou_hainan"] },
     works: { label: "詩詞與書法", ids: ["song_ci", "song_four_calligraphy", "poem_xihu", "poem_chengtian", "poem_xilin", "snow_mud", "love_bamboo", "poem_jinshan", "poem_dingfengbo_shahu", "poem_chibi"] },
     literati: { label: "文壇暗號", ids: ["pair_suhuang", "pair_suxin", "pair_ousu", "pair_hansu", "pair_songfour", "pair_threesu"] },
     people: { label: "故人與交遊", ids: ["zhe_origin", "wang_an_shi", "foyin", "wives", "wang_fu_detail", "wang_runzhi", "chao_yun_detail"] },
