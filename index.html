@@ -1757,9 +1757,20 @@
   }
 
   function processSushiAI(query) {
-    const lower = query.toLowerCase();
+    // 先做 Unicode 正規化並移除空白，避免手機輸入法或貼上文字造成道別詞漏判。
+    const lower = query.toLowerCase().normalize('NFKC').replace(/\s+/g, '');
+    const farewellWords = ["掰掰", "拜拜", "下回見", "下次再見", "再見", "回頭見", "改日再聊", "下回再聊", "告辭", "晚安", "先告辭", "先走了", "要走了", "先聊到這裡", "今天先到這裡", "今日先到這裡"];
+    const gratitudeWords = ["謝謝先生", "謝謝", "感謝先生", "感謝您", "多謝先生"];
 
-
+    // 道別置於所有其他資料庫匹配之前，確保「掰掰／下回見」不會落入預設回覆。
+    if (farewellWords.some(word => lower.includes(word))) {
+      hasFarewelled = true;
+      if (timeLeft > 0) unlockMission('early_farewell');
+      if (hasGreeted || gratitudeWords.some(word => lower.includes(word))) unlockMission('courtesy');
+      appendFarewellReply(query);
+      document.getElementById('farewellActions').classList.add('visible');
+      return;
+    }
 
     const greetingWords = ["先生好", "先生您好", "蘇軾先生好", "你好", "您好", "早安", "早上好", "午安", "下午好", "晚上好", "哈囉", "嗨"];
     if (query.length <= 30 && greetingWords.some(word => query.includes(word))) {
@@ -1769,17 +1780,7 @@
       return;
     }
 
-    // 致謝與正式道別分流：只有真正告辭後才顯示提前結算按鈕。
-    const farewellWords = ["掰掰", "拜拜", "下回見", "下次再見", "再見", "回頭見", "改日再聊", "下回再聊", "告辭", "晚安", "先告辭", "先走了", "要走了", "先聊到這裡", "今天先到這裡", "今日先到這裡"];
-    const gratitudeWords = ["謝謝先生", "謝謝", "感謝先生", "感謝您", "多謝先生"];
-    if (farewellWords.some(word => lower.includes(word))) {
-      hasFarewelled = true;
-      if (timeLeft > 0) unlockMission('early_farewell');
-      if (hasGreeted || gratitudeWords.some(word => lower.includes(word))) unlockMission('courtesy');
-      appendFarewellReply(query);
-      document.getElementById('farewellActions').classList.add('visible');
-      return;
-    }
+    // 致謝仍保留獨立分流：只有正式道別才顯示提前結算按鈕。
     if (gratitudeWords.some(word => lower.includes(word))) {
       if (hasGreeted) unlockMission('courtesy');
       appendMessage("小友有心了，不必客氣。若還有想問的，老夫仍在竹影下候著；若準備告辭，說聲『再見』或『先告辭』便好。", 'sushi', '【東坡先生回話】');
