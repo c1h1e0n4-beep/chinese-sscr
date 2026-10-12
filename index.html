@@ -934,7 +934,7 @@
     {
       id: "snow_mud",
       priority: 95,
-      keys: ["雪泥鴻爪", "飛鴻雪泥", "飛鴻踏雪泥", "鴻飛那復計東西", "和子由澠池懷舊", "〈和子由澠池懷舊〉", "澠池懷舊", "澠池"],
+      keys: ["雪泥鴻爪", "飛鴻雪泥", "飛鴻踏雪泥", "鴻飛那復計東西", "和子由澠池懷舊", "〈和子由澠池懷舊〉", "澠池懷舊", "澠池", "初任官職", "初任官", "第一次任官", "初仕", "鳳翔初仕", "鳳翔簽判"],
       title: "【經典成語・雪泥鴻爪】",
       reply: "<b>【名詩出處】</b><br>「人生到處知何似，應似飛鴻踏雪泥。<br>泥上偶然留指爪，鴻飛那復計東西。」（〈和子由澠池懷舊〉）<br><br>" +
              "<b>【創作時期與年齡】</b><br>宋仁宗嘉祐六年（西元 1061 年），老夫二十六歲赴鳳翔任官途中寫給弟弟蘇轍的詩。<br><br>" +
@@ -1889,6 +1889,17 @@
     // 複合關鍵字：只有「鳳翔」與「簽判」同時出現，才導向雪泥鴻爪內容。
     const asksFengxiangRole = lower.includes('鳳翔') && lower.includes('簽判');
     if (asksFengxiangRole) {
+      const snowMudItem = sushiDB.find(item => item.id === 'snow_mud');
+      unlockedSet.add(snowMudItem.id);
+      updateProgress();
+      appendMessage(snowMudItem.reply, 'sushi', snowMudItem.title, snowMudItem.hint);
+      renderQuickTags();
+      return;
+    }
+
+    // 「初任官職／初仕」專指鳳翔初仕與〈和子由澠池懷舊〉，優先導向雪泥鴻爪。
+    const asksFirstOffice = ['初任官職', '初任官', '第一次任官', '初仕', '鳳翔初仕'].some(term => lower.includes(term));
+    if (asksFirstOffice) {
       const snowMudItem = sushiDB.find(item => item.id === 'snow_mud');
       unlockedSet.add(snowMudItem.id);
       updateProgress();
