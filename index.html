@@ -1290,6 +1290,14 @@
       hint: "還可以問：「蘇黃是談詩還是書法？」、「歐蘇是哪兩個人？」或「三蘇是誰？」"
     },
     {
+      id: "pair_song_painters",
+      priority: 145,
+      keys: ["宋代三大畫家", "宋代三畫家", "三大畫家", "米蘇李", "米芾蘇軾李公麟", "米芾蘇軾和李公麟", "李公麟畫家", "畫家並稱", "文人畫三家"],
+      title: "【文壇暗號・三家妙筆】",
+      reply: "小友查得不錯！在教材常見的文人畫脈絡裡，後人常將米芾、老夫與李公麟，也就是<b>米芾、蘇軾、李公麟</b>，並列為<b>宋代三大畫家</b>，也可以記成『<b>米、蘇、李</b>』。<br><br>米芾善書又善畫，還精於鑑賞；李公麟以人物畫聞名，西園雅集的畫名也常與他相連；老夫則喜畫枯木、怪石與竹，主張畫不只求外形相似，更要傳出物象的精神。三人的畫路不完全相同，卻都讓宋代文人把詩文、書法、鑑賞與繪畫連在一起。<br><br>這一組不要和『蘇黃米蔡』混淆：後者是書法四家；也不要和北宋山水畫壇的其他三家說法混為一談。",
+      hint: "還可以問：「蘇黃米蔡談的是詩還是書法？」、「李公麟與西園雅集有什麼關係？」或「蘇軾為什麼重視畫中的神韻？」"
+    },
+    {
       id: "pair_threesu",
       priority: 145,
       keys: ["三蘇是誰", "三蘇有誰", "三蘇並稱", "眉山三蘇", "蘇家父子並稱"],
@@ -1396,6 +1404,7 @@
     { id: "pair_ousu", label: "古文雙璧", query: "歐蘇是誰？為什麼會這樣並稱？" },
     { id: "pair_hansu", label: "潮海相逢", query: "韓潮蘇海是什麼意思？" },
     { id: "pair_songfour", label: "四管名筆", query: "蘇黃米蔡是誰？宋四家是什麼？" },
+    { id: "pair_song_painters", label: "三家妙筆", query: "宋代三大畫家米芾、蘇軾、李公麟各有什麼特色？" },
     { id: "pair_threesu", label: "眉山三影", query: "三蘇是誰？為什麼會這樣並稱？" },
     { id: "huangzhou_story", label: "城東那塊荒地", query: "蘇軾在黃州發生了什麼事？" },
     { id: "after_huangzhou_rise", label: "風雨後再起", query: "黃州之後，您是不是一直被貶？後來還有重新受到重用嗎？" },
@@ -1665,7 +1674,7 @@
     },
     literati_master: {
       name: "文壇識名",
-      ids: ["pair_suhuang", "pair_suxin", "pair_ousu", "pair_hansu", "pair_songfour", "pair_threesu"]
+      ids: ["pair_suhuang", "pair_suxin", "pair_ousu", "pair_hansu", "pair_songfour", "pair_song_painters", "pair_threesu"]
     },
     timeline_master: {
       name: "人生長卷",
@@ -1704,7 +1713,7 @@
     places: { label: "地方治理", ids: ["mizhou_locust_baby", "hangzhou_sudi", "xuzhou_flood", "dingzhou_military", "huangzhou_story", "huizhou_litchi", "danzhou_hainan"] },
     works: { label: "詩詞與書法", ids: ["poem_mizhou", "poem_shuidiao", "poem_busuanzi", "song_ci", "song_four_calligraphy", "poem_xihu", "poem_chengtian", "poem_xilin", "snow_mud", "love_bamboo", "poem_jinshan", "poem_dingfengbo_shahu", "poem_chibi", "yu_niang_rou_nu"] },
     huangzhou: { label: "黃州現場", ids: ["huangzhou_story", "dongpo_title_origin", "poem_busuanzi", "poem_chengtian", "poem_dingfengbo_shahu", "poem_chibi", "song_four_calligraphy", "food_dongpo", "life_hardship"] },
-    literati: { label: "文壇暗號", ids: ["pair_suhuang", "pair_suxin", "pair_ousu", "pair_hansu", "pair_songfour", "pair_threesu", "song_ci"] },
+    literati: { label: "文壇暗號", ids: ["pair_suhuang", "pair_suxin", "pair_ousu", "pair_hansu", "pair_songfour", "pair_song_painters", "pair_threesu", "song_ci"] },
     people: { label: "重要他人", ids: ["zhe_origin", "su_xun", "mother_teacher", "wang_an_shi", "zhang_dun", "ma_mengde", "foyin", "wives", "wang_fu_detail", "wang_runzhi", "chao_yun_detail", "family_closeness", "yu_niang_rou_nu"] },
     lifestyle: { label: "日常與趣味", ids: ["food_dongpo", "oyster_easter_egg", "bath_easter_egg", "love_bamboo", "foyin", "daily_life", "life_choice"] },
     adversity: { label: "逆境之路", ids: ["huzhou_memorial", "wutai_fish", "advice_setback", "after_huangzhou_rise", "huizhou_litchi", "danzhou_hainan", "poem_jinshan", "travel_map"] }
