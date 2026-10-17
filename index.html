@@ -1536,8 +1536,8 @@
     const unlockedClueCount = getMainClueCount();
     const remainingClueCount = Math.max(0, allCluePool.length - unlockedClueCount);
     const clueProgressText = remainingClueCount > 0
-      ? `本次尋得 <b>${unlockedClueCount}</b> 個錦囊，還有 <b>${remainingClueCount}</b> 段東坡人生等你發現。`
-      : `本次尋得 <b>${unlockedClueCount}</b> 個錦囊，東坡人生的這一席風景已讓您走過。`;
+      ? `本次蒐集 <b>${unlockedClueCount}</b> 個錦囊，還有 <b>${remainingClueCount}</b> 段東坡人生等你發現。`
+      : `本次蒐集 <b>${unlockedClueCount}</b> 個錦囊，東坡人生的這一席風景已讓您走過。`;
     const doneIds = Object.keys(achievementMeta).filter(id => missionSet.has(id) || achievementSet.has(id));
     const pendingIds = Object.keys(achievementMeta).filter(id => !missionSet.has(id) && !achievementSet.has(id));
     const doneList = doneIds.length
